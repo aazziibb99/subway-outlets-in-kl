@@ -53,7 +53,7 @@ python geocode.py
 
 run server and open the url to view the interface
 ```terminal
-uvicorn main:app -reload
+uvicorn main:app --reload
 ```
 
 ## libraries
