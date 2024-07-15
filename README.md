@@ -12,7 +12,7 @@
 
 
 ## Installation
-'''bash
+```terminal
 create virtual environment
 python -m venv venv
 
@@ -27,10 +27,10 @@ python scraper.py
 
 get geocode for each outlet based on address
 python geocode.py
-'''
+```
 
 ## Usage
-'''bash
+```terminal
 # rename .env.example file to .env
 # open .env file and add your own google maps api key
 
@@ -38,4 +38,4 @@ python geocode.py
 uvicorn main:app -reload
 
 # open the url in the terminal
-'''
+```
