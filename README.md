@@ -13,19 +13,19 @@
 
 ## Installation
 '''bash
-# create virtual environment
+create virtual environment
 python -m venv venv
 
-# activate virtual environment
+activate virtual environment
 venv\scripts\activate
 
-# install packages
+install packages
 pip install -r requirements.txt
 
-# get data by scraping subway find-a-store website
+get data by scraping subway find-a-store website
 python scraper.py
 
-# get geocode for each outlet based on address
+get geocode for each outlet based on address
 python geocode.py
 '''
 
