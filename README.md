@@ -12,20 +12,29 @@
 
 
 ## Installation
-```terminal
+
 create virtual environment
+```terminal
 python -m venv venv
+```
 
 activate virtual environment
+```terminal
 venv\scripts\activate
+```
 
 install packages
+```terminal
 pip install -r requirements.txt
+```
 
 get data by scraping subway find-a-store website
+```terminal
 python scraper.py
+```
 
 get geocode for each outlet based on address
+```terminal
 python geocode.py
 ```
 
