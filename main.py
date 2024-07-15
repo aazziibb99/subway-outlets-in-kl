@@ -28,6 +28,6 @@ def list_outlet():
 
 @api.get("/google/maps")
 def google_maps():
-    return RedirectResponse(f"https://maps.googleapis.com/maps/api/js?key={MAPS_API_KEY}")
+    return RedirectResponse(f"https://maps.googleapis.com/maps/api/js?key={MAPS_API_KEY}&loading=async")
 
 app.include_router(api)
