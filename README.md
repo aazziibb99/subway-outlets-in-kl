@@ -4,14 +4,18 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Libraries](#libraries)
 
-## About
+## about
+collecting data on subway kuala lumpur outlets such as branch name, address, waze link using web scraping tools and getting geographical coordinate of each store using third party api. the data then be served on a spa to show the location of selected outlet and other surrounding landmarks within 5km radius.
 
+## features
+- automated web scraping process using selenium
+- get geocode using google maps geocoder api
+- simple api to serve interface containing the collected data using fastapi
+- highlight catchment in 5km radius of selected store
 
-## Features
-
-
-## Installation
+## installation
 
 create virtual environment
 ```terminal
@@ -28,23 +32,42 @@ install packages
 pip install -r requirements.txt
 ```
 
-get data by scraping subway find-a-store website
+## usage
+
+to-do first:
+- rename .env.example file to .env
+- open .env file and add personal google maps api key
+- (optional) delete database.db file if running web scraper and geocoder
+
+(optional if database.db deleted) to get data by scraping subway find-a-store website
 ```terminal
 python scraper.py
 ```
 
-get geocode for each outlet based on address
+(optional if database.db deleted) get geocode for each outlet based on address
 ```terminal
 python geocode.py
 ```
 
-## Usage
+run server and open the url to view the interface
 ```terminal
-# rename .env.example file to .env
-# open .env file and add your own google maps api key
-
-# start the app
 uvicorn main:app -reload
-
-# open the url in the terminal
 ```
+
+## libraries
+backend
+- selenium
+- peewee
+- requests
+- fastapi
+- uvicorn
+
+frontend
+- tailwind css
+- daisyui
+- alpine js
+- axios
+
+apis
+- google maps
+- google maps geocoder
