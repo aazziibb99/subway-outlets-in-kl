@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="h-screen w-screen p-8 flex gap-8"
+    x-data="{
+        map: {},
+        marker: {},
+        circle: {},
+        outlets: [],
+        outlet: {},
+        search: [],
+    }"
+    x-init="
+
+        const { AdvancedMarkerView } = await google.maps.importLibrary('marker');
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: {
+                lat: 3.13871,
+                lng: 101.6821,
+            },
+            mapId: 'DEMO_MAP_ID'
+        });
+
+        marker = new google.maps.Marker({
+            map: map,
+            animation: google.maps.Animation.LOWER,
+        });
+
+        circle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.0875,
+            map: map,
+            radius: 5000,
+        })
+
+        axios.get('/api/outlets').then(({ data }) => {
+            outlets = data;
+            outlets.sort((a, b) => a.name.localeCompare(b.name));
+            console.log(outlets)
+            search = [...outlets];
+        });
+    "
+    x-effect="
+        if(outlet.latitude && outlet.longitude) {
+            map.setCenter(new google.maps.LatLng(outlet.latitude, outlet.longitude));
+            map.setZoom(12)
+            marker.setPosition(new google.maps.LatLng(outlet.latitude, outlet.longitude));
+            circle.setCenter(new google.maps.LatLng(outlet.latitude, outlet.longitude));
+        }
+    "
+>
+    <div class="shrink-0 card bg-base-200 w-96 p-4 flex flex-col gap-4">
+        <span class="card-title pl-4">Subway Outlets in KL</span>
+        <input type="text" class="input input-bordered input-sm join-item"
+            placeholder="Search outlet by name"
+            @input="search = [...outlets].filter(o => o.name.toLowerCase().includes($el.value.toLowerCase())) ?? outlets"
+        >
+        <div class="overflow-auto card bg-base-100 grow">
+            <ul class="menu">
+                <template x-for="o in search">
+                    <li>
+                        <div class="flex justify-between"
+                            :class="o.id == outlet.id && 'active'"
+                            @click="outlet = o"
+                        >
+                            <div class="grow flex flex-col gap-2">
+                                <div x-text="o.name" class="font-bold"></div>
+                                <div class="text-xs" x-text="o.address"></div>
+                                <div>
+                                    <template x-for="oh in o.operating_hours">
+                                        <div class="text-xs font-semibold" x-text="oh"></div>
+                                    </template>
+                                </div>
+                            </div>
+                            <a class="rounded-full bg-base-content p-2"
+                                :href="o.waze_link"
+                                target="blank"
+                            >
+                                <svg class="text-base-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
+                                    <path d="M17.5 9V9.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M10.5 9V9.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M10.5 13C10.5 13 11.5 15 14 15C16.5 15 17.5 13 17.5 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M11 20C11 21.1046 10.1046 22 9 22C7.89543 22 7 21.1046 7 20C7 18.8954 7.89543 18 9 18C10.1046 18 11 18.8954 11 20Z" stroke="currentColor" stroke-width="1.5" />
+                                    <path d="M10.9992 19.9446C11.6843 19.9866 12.3573 20 13 20C17.9706 20 22 15.9706 22 11C22 6.02944 17.9706 2 13 2C8.02944 2 4 6.02944 4 11C4 12.039 4 14 2 15C3.05768 17.3798 4.97354 18.6409 7.12557 19.3009" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                                    <path d="M17 22.0003C18.1046 22.0003 19 21.1049 19 20.0003C19 19.3295 18.6698 18.7359 18.163 18.373C17.2278 19.0291 16.1621 19.5118 15.0126 19.7744C15.0043 19.8486 15 19.9239 15 20.0003C15 21.1049 15.8954 22.0003 17 22.0003Z" stroke="currentColor" stroke-width="1.5" />
+                                </svg>
+                            </a>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </div>
+    <div id="map" class="grow card">
+    </div>
+    <script
+        src="/api/google/maps">
+    </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+selenium
+peewee
+fastapi
+uvicorn
+requests
