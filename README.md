@@ -33,6 +33,8 @@ pip install -r requirements.txt
 ```
 
 ## usage
+!!! important !!!
+- make sure internet connection is available
 
 to-do first:
 - rename .env.example file to .env
